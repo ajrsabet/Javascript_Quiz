@@ -13,36 +13,76 @@
 
 <body>
     <header>
-        <div id="highScore">View high score</div>
-        <div id="timer">Timer</div>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" id="highScore" href="#">High Score</a>
+
+            <span class="navbar-brand ml-auto time" id="timer">
+                Timer
+            </span>
+            <h1 class="time"></h1>
+            <div id="main"></div>
+            </div>
+        </nav>
+
     </header>
-    <div class="container">
-        <div class="row">
-            <div class="column-md-3">
+    <div class="container" style="margin: 30px auto;">
+
+        <div class="jumbotron">
+            <h1 class="display-4 quizHeader" id="quizHeader">Javascript Quiz</h1>
+            <p class="lead">This quiz will test your proficiency with Javascript.</p>
+            <hr class="my-4">
+            <p id="qText">You will have XXXX seconds to complete XXXXX number of questions. Every question you get wrong will
+                penalize your time by 15 seconds. Once you finish the quize or the timer gets to 0, the quize will stop.
+                Your quiz will be the time remaining on the timer.
+            </p>
+            <div class="row">
+                <div class="column-3">
+                    <button class="btn btn-primary btn-sm" id="startBtn">Start Quiz</button>
+                </div>
             </div>
-            <div class="column-md-6" id="question">
-                    <div class="card" style="width: 18rem;">
-                            <div class="card-body">
-                              <h5 class="card-title">Card title</h5>
-                              <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                              <a href="#" class="card-link">Card link</a>
-                              <a href="#" class="card-link">Another link</a>
-                            </div>
-                          </div>
 
-
-
-
+            <div class="row">
+                <div class="column-3">
+                    <button class="btn btn-primary btn-sm optbtn" id="aBtn">A</button>
+                </div>
+                <div class="column">
+                    <p id="aAnswer"></p>
+                </div>
             </div>
-            <div class="column-md-3">
+            <div class="row">
+                <div class="column-3">
+                    <button class="btn btn-primary btn-sm optbtn" id="bBtn">B</button>
+                </div>
+                <div class="column">
+                    <p id="bAnswer"></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column-3">
+                    <button class="btn btn-primary btn-sm optbtn" id="cBtn">C</button>
+                </div>
+                <div class="column">
+                    <p id="cAnswer"></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="column-3">
+                    <button class="btn btn-primary btn-sm optbtn" id="dBtn">D</button>
+                </div>
+                <div class="column">
+                    <p id="dAnswer"></p>
+                </div>
             </div>
         </div>
+
+
+
 
     </div>
 
     <!-- div used to consolodate script links -->
-    <div> 
+    <div>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
         </script>

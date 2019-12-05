@@ -1,5 +1,17 @@
 body {
     background-image: url("http://www.binarytranslator.com/images/binary3.jpg");
     background-size: 100%;
+    background-repeat: no-repeat;
+    background-color: black;
 
+}
+
+.optbtn {
+    margin: 5px;
+    width: 50px;
+}
+
+.row {
+    border: darkgrey;
+    margin: 10px;
 }

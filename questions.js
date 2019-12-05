@@ -1,13 +1,31 @@
-var questions = [
+//questions coppied from https://www.geeksforgeeks.org/javascript-quiz-set-1/
+
+
+var questionArray = [
     {
-      title: "Commonly used data types DO NOT include:",
-      choices: ["strings", "booleans", "alerts", "numbers"],
-      answer: "alerts"
+        question: 'What is my name?',
+        choices: ['Adam', 'Aslan', 'Rafay', 'Sarah', ],
+        answer: 'Adam',
     },
     {
-      title: "The condition in an if / else statement is enclosed within ____.",
-      choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
-      answer: "parentheses"
+        question: 'How old am I?',
+        choices: ['33', '15', '44', '79', ],
+        answer: '33',
     },
-    ///etc.
-  ];
+    {
+        question: 'What is my dogs name?',
+        choices: ['Tobby', 'Tyson', 'Charlie', 'Coffee', ],
+        answer: 'Tobby',
+    },
+    {
+        question: 'What is my favorite hobby?',
+        choices: ['Building stuff', 'Piano', 'Fishing', 'Clubbing', ],
+        answer: 'Building stuff',
+    },
+    {
+        question: 'Where was I born?',
+        choices: ['Kansas', 'Arizona', 'Sweeden', 'Canada', ],
+        answer: 'Kansas',
+    },
+
+];
