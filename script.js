@@ -28,11 +28,11 @@ timer.textContent = "Quiz Time Limit: " + secondsLeft + " seconds";
 function startTimer() {
     var timerInterval = setInterval(function () {
         secondsLeft--;
-        timer.textContent = "Time Remaining: " + secondsLeft + " seconds";
+        timer.textContent = "Time: " + secondsLeft + " sec";
 
         if (secondsLeft <= 0) {
             clearInterval(timerInterval);
-            timer.textContent = "Time Remaining: 0 seconds";
+            timer.textContent = "Time: 0 sec";
             finalResults();
         }
     }, 1000)
