@@ -7,6 +7,7 @@ var timer = document.getElementById("timer");
 // var quiz = document.querySelector(".quizHeader");
 var qText = document.getElementById("qText");
 var startBtn = document.getElementById("startBtn");
+var buttons = document.querySelectorAll(".optbtn")
 var aBtn = document.getElementById("aBtn");
 var bBtn = document.getElementById("bBtn");
 var cBtn = document.getElementById("cBtn");
@@ -15,7 +16,7 @@ var aAnswer = document.getElementById("aAnswer");
 var bAnswer = document.getElementById("bAnswer");
 var cAnswer = document.getElementById("cAnswer");
 var dAnswer = document.getElementById("dAnswer");
-
+var correctAnswers = 0
 var qNum = 0;
 var secondsLeft = questionArray.length * 15
 timer.textContent = "Quiz Time Limit: " + secondsLeft + " seconds";
@@ -47,7 +48,7 @@ dBtn.parentElement.parentElement.style.display = "none";
 
 
 startBtn.addEventListener("click", function () {
-    console.log("Start Button works");
+    // console.log("Start Button works");
     startTimer();
     startBtn.style.display = "none";
     aBtn.parentElement.parentElement.style.display = "";
@@ -56,24 +57,52 @@ startBtn.addEventListener("click", function () {
     dBtn.parentElement.parentElement.style.display = "";
 
     nextQuestion();
-    
+
 })
 
 
 
 function nextQuestion() {
+    // answer randomizer
+    rndAns = [];
+
+    for (let i = questionArray[qNum].choices.length-1; i > -1; i--) {
+        j = Math.floor(Math.random() * (i+1));
+        console.log("j: " + j);
+
+        rndAns.push(questionArray[qNum].choices[j]);
+        questionArray[qNum].choices.splice(j, 1);
+
+        // console.log("rndAns:" + rndAns);
+        // console.log("ansAry:" + questionArray[qNum].choices);
+    }
+
+
     qText.textContent = questionArray[qNum].question;
-    aAnswer.textContent = questionArray[qNum].choices[0];
-    bAnswer.textContent = questionArray[qNum].choices[1];
-    cAnswer.textContent = questionArray[qNum].choices[2];
-    dAnswer.textContent = questionArray[qNum].choices[3];
-
-    checkAnswer();
+    aAnswer.textContent = rndAns[0];
+    bAnswer.textContent = rndAns[1];
+    cAnswer.textContent = rndAns[2];
+    dAnswer.textContent = rndAns[3];
 }
 
-function checkAnswer() {
-    qNum ++
-}
+buttons.forEach(function (button) {
+    button.addEventListener("click", function (event) {
+        // console.log("clicked", event.target);
+        answer = event.target.textContent
+        console.log(answer);
+
+
+        if (qNum >= questionArray.length-1) {
+            
+            
+            qNum++
+            nextQuestion();
+        } else {
+
+        }
+    })
+
+})
 
 // function answerChecker(answerPicked){
 //     var answer = 0;
