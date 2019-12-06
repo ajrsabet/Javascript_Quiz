@@ -20,6 +20,7 @@ var scoreBoard = document.getElementById("scoreBoard");
 var correctAns = 0
 var incorrectAns = 0
 var qNum = 0;
+var subtractTime = "no"
 var secondsLeft = questionArray.length * 15
 timer.textContent = "Quiz Time Limit: " + secondsLeft + " seconds";
 
@@ -30,10 +31,14 @@ function startTimer() {
         secondsLeft--;
         timer.textContent = "Time: " + secondsLeft + " sec";
 
+        if (subtractTime === "yes") {
+            secondsLeft = secondsLeft-15 ;
+            subtractTime = "no"
+        }
         if (secondsLeft <= 0) {
             clearInterval(timerInterval);
             timer.textContent = "Time: 0 sec";
-            finalResults();
+            scoreBoard();
         }
     }, 1000)
 }
@@ -102,6 +107,8 @@ buttons.forEach(function (button) {
         } else {
             incorrectAns++;
             // deduct time
+            subtractTime = "yes"
+            
         }
         scoreBoard.textContent = "Correct: " + correctAns + " Incorrect: " + incorrectAns;
 // console.log(qNum);
