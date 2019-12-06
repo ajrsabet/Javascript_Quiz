@@ -16,7 +16,9 @@ var aAnswer = document.getElementById("aAnswer");
 var bAnswer = document.getElementById("bAnswer");
 var cAnswer = document.getElementById("cAnswer");
 var dAnswer = document.getElementById("dAnswer");
-var correctAnswers = 0
+var scoreBoard = document.getElementById("scoreBoard");
+var correctAns = 0
+var incorrectAns = 0
 var qNum = 0;
 var secondsLeft = questionArray.length * 15
 timer.textContent = "Quiz Time Limit: " + secondsLeft + " seconds";
@@ -46,7 +48,7 @@ cBtn.parentElement.parentElement.style.display = "none";
 dBtn.parentElement.parentElement.style.display = "none";
 
 
-
+// start quiz
 startBtn.addEventListener("click", function () {
     // console.log("Start Button works");
     startTimer();
@@ -61,14 +63,14 @@ startBtn.addEventListener("click", function () {
 })
 
 
-
+// load next question onto page
 function nextQuestion() {
     // answer randomizer
     rndAns = [];
 
-    for (let i = questionArray[qNum].choices.length-1; i > -1; i--) {
-        j = Math.floor(Math.random() * (i+1));
-        console.log("j: " + j);
+    for (let i = questionArray[qNum].choices.length - 1; i > -1; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        // console.log("j: " + j);
 
         rndAns.push(questionArray[qNum].choices[j]);
         questionArray[qNum].choices.splice(j, 1);
@@ -85,20 +87,40 @@ function nextQuestion() {
     dAnswer.textContent = rndAns[3];
 }
 
+// take user choice and compare with answer
 buttons.forEach(function (button) {
     button.addEventListener("click", function (event) {
         // console.log("clicked", event.target);
-        answer = event.target.textContent
-        console.log(answer);
+        opt = ["A", "B", "C", "D", ]
+        answer = rndAns[opt.indexOf(event.target.textContent)];
+        // console.log(answer);
+        if (answer === questionArray[qNum].answer) {
+            correctAns++;
+            scoreBoard.textContent = "Correct: " + correctAns + " Incorrect: " + incorrectAns;
+            // console.log(correctAnswers);
+
+        } else {
+            incorrectAns++;
+            // deduct time
+        }
+        scoreBoard.textContent = "Correct: " + correctAns + " Incorrect: " + incorrectAns;
+// console.log(qNum);
+// console.log(questionArray.length);
 
 
-        if (qNum >= questionArray.length-1) {
-            
-            
+        if (qNum < questionArray.length-1) {
+
+            //move to next question
             qNum++
             nextQuestion();
-        } else {
 
+        } else {
+            qText.textContent = "you have completed the quiz"
+            aBtn.parentElement.parentElement.style.display = "none";
+            bBtn.parentElement.parentElement.style.display = "none";
+            cBtn.parentElement.parentElement.style.display = "none";
+            dBtn.parentElement.parentElement.style.display = "none";
+            // scoreBoard();
         }
     })
 
