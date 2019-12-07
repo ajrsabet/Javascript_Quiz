@@ -16,29 +16,51 @@ var aAnswer = document.getElementById("aAnswer");
 var bAnswer = document.getElementById("bAnswer");
 var cAnswer = document.getElementById("cAnswer");
 var dAnswer = document.getElementById("dAnswer");
-var scoreBoard = document.getElementById("scoreBoard");
+var scoreCounter = document.getElementById("scoreCounter");
+var highScore = document.getElementById("highScore");
+var quizHeader = document.getElementById("quizHeader")
 var correctAns = 0
 var incorrectAns = 0
 var qNum = 0;
-var subtractTime = "no"
-var secondsLeft = questionArray.length * 15
-timer.textContent = "Quiz Time Limit: " + secondsLeft + " seconds";
+var subtractTime = "no";
+var stopTime = "no";
+var secondsLeft = questionArray.length * 15;
 
+
+// if (storedTodos !== null) {
+//     todos = storedTodos;
+//   }
+
+  var score1 = window.localStorage.getItem('score1');
+  var score2 = window.localStorage.getItem('score2');
+  var score3 = window.localStorage.getItem('score3');
+  var lastScore = window.localStorage.getItem('lastScore');
+
+
+
+
+
+console.log(score1, score2, score3, lastScore);
+
+
+timer.textContent = "Quiz Time Limit: " + secondsLeft;
+qText.textContent = "You will have " + secondsLeft + " seconds to complete " + questionArray.length + " number of questions. Every question you get wrong will penalize your time by 15 seconds. Once you finish the quize or the timer gets to 0, the quize will stop. Your quiz will be the time remaining on the timer."
 
 
 function startTimer() {
     var timerInterval = setInterval(function () {
-        secondsLeft--;
-        timer.textContent = "Time: " + secondsLeft + " sec";
-
-        if (subtractTime === "yes") {
-            secondsLeft = secondsLeft-15 ;
-            subtractTime = "no"
+        if (stopTime === "yes") {
+            clearInterval(timerInterval)
         }
+        secondsLeft--;
+        console.log(secondsLeft);
+        
+        timer.textContent = "Time: " + secondsLeft;
+        timer.setAttribute("style", "color:white");
+
         if (secondsLeft <= 0) {
             clearInterval(timerInterval);
-            timer.textContent = "Time: 0 sec";
-            scoreBoard();
+            scoreCounter();
         }
     }, 1000)
 }
@@ -70,7 +92,7 @@ startBtn.addEventListener("click", function () {
 
 // load next question onto page
 function nextQuestion() {
-    // answer randomizer
+    // TANGENT: answer randomizer
     rndAns = [];
 
     for (let i = questionArray[qNum].choices.length - 1; i > -1; i--) {
@@ -92,7 +114,7 @@ function nextQuestion() {
     dAnswer.textContent = rndAns[3];
 }
 
-// take user choice and compare with answer
+// Check answer
 buttons.forEach(function (button) {
     button.addEventListener("click", function (event) {
         // console.log("clicked", event.target);
@@ -100,52 +122,79 @@ buttons.forEach(function (button) {
         answer = rndAns[opt.indexOf(event.target.textContent)];
         // console.log(answer);
         if (answer === questionArray[qNum].answer) {
+            console.log("correct answer");
+            
             correctAns++;
-            scoreBoard.textContent = "Correct: " + correctAns + " Incorrect: " + incorrectAns;
+            scoreCounter.textContent = "Correct: " + correctAns + " Incorrect: " + incorrectAns;
             // console.log(correctAnswers);
 
         } else {
+            console.log("incorrect answer");
             incorrectAns++;
             // deduct time
-            subtractTime = "yes"
-            
+            secondsLeft = secondsLeft - 15;
         }
-        scoreBoard.textContent = "Correct: " + correctAns + " Incorrect: " + incorrectAns;
-// console.log(qNum);
-// console.log(questionArray.length);
+        scoreCounter.textContent = "Correct: " + correctAns + " Incorrect: " + incorrectAns;
+        // console.log(qNum);
+        // console.log(questionArray.length);
 
 
-        if (qNum < questionArray.length-1) {
+        if (qNum < questionArray.length - 1) {
 
             //move to next question
             qNum++
             nextQuestion();
 
         } else {
-            qText.textContent = "you have completed the quiz"
-            aBtn.parentElement.parentElement.style.display = "none";
-            bBtn.parentElement.parentElement.style.display = "none";
-            cBtn.parentElement.parentElement.style.display = "none";
-            dBtn.parentElement.parentElement.style.display = "none";
-            // scoreBoard();
+            //end quiz and show scoreboard
+            stopTime = "yes"
+            qText.textContent = "You have completed all of the questions in the quiz"
+            scoreBoard();
         }
     })
 
 })
 
-// function answerChecker(answerPicked){
-//     var answer = 0;
-//     var answerArr = []
-//     for (let i = 0; i < .length; i++) {
-//         var solution = array[i];
-//         if (answerPicked === answer)
-//         results.push
+highScore.addEventListener("click", function () {
+    scoreBoard();
+})
 
-//     }
-// }
+function scoreBoard() {
+    window.localStorage.setItem("lastScore", lastScore);
+    localStorage.setItem("score1", score1);
+    localStorage.setItem("score2", score2);
+    localStorage.setItem("score3", score3);
+    
+    startBtn.style.display = "none";
+    aBtn.parentElement.parentElement.style.display = "";
+    bBtn.parentElement.parentElement.style.display = "";
+    cBtn.parentElement.parentElement.style.display = "";
+    dBtn.parentElement.parentElement.style.display = "";
+    aBtn.style.display = "none";
+    bBtn.style.display = "none";
+    cBtn.style.display = "none";
+    dBtn.style.display = "none";
+    setTimeout(function(){ }, 3000);
+    lastScore = secondsLeft
+    console.log("lastScore: " + lastScore);
+    
+    if (lastScore >= score1) {
+        score3 = score2;
+        score2 = score1;
+        score1 = lastScore;
+    } else if (lastScore >= score2) {
+        score3 = score2;
+        score2 = lastScore;
+    } else if (lastScore >= score3) {
+        score3 = lastScore;
+    }
+    aAnswer.textContent = "Score 1: " + score1;
+    bAnswer.textContent = "Score 2: " + score2;
+    cAnswer.textContent = "Score 3: " + score3;
+    dAnswer.textContent = "Last Score: " + lastScore;
+}
 
-// TANGENT: Questions will be pulled random
-// TANGENT: Question answers ordered randomly 
+// TANGENT: Questions will be pulled random 
 
 // Score is calculated by time remaining. Answering quickly and correctly results in a higher score. Answering incorrectly results in a time penalty (for example, 15 seconds are subtracted from time remaining).
 
@@ -154,7 +203,7 @@ buttons.forEach(function (button) {
 
 // BONUS: Add audio files to alert the user of correct or incorrect answers. Be sure to include the appropriate license.
 
-// BONUS: Customize the application theme.
+// BONUS: Customize the application theme. DONE
 
 // BONUS: Create multiple quizzes and an option for users to choose between them.
 

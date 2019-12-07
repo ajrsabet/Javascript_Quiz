@@ -15,3 +15,7 @@ body {
     border: darkgrey;
     margin: 10px;
 }
+
+.container{
+        max-width: 900px;
+    }

@@ -14,8 +14,8 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" id="highScore" href="#">High Score</a>
-            <span class="navbar-brand ml-auto time" id="scoreBoard">
+            <button type="button" class="btn btn-secondary" id="highScore">High Score</button>
+            <span class="navbar-brand ml-auto time" id="scoreCounter">
                     Correct Answers: 0
                 </span>
             <span class="navbar-brand ml-auto time" id="timer">
@@ -33,10 +33,7 @@
             <h1 class="display-4 quizHeader" id="quizHeader">My Quiz</h1>
             <p class="lead">This quiz will test your knowledge about me.</p>
             <hr class="my-4">
-            <p id="qText">You will have XXXX seconds to complete XXXXX number of questions. Every question you get wrong
-                will
-                penalize your time by 15 seconds. Once you finish the quize or the timer gets to 0, the quize will stop.
-                Your quiz will be the time remaining on the timer.
+            <p id="qText">
             </p>
             <div class="row">
                 <div class="column-3">
@@ -76,6 +73,7 @@
                     <p id="dAnswer"></p>
                 </div>
             </div>
+            
 
         </div>
 
