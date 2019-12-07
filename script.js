@@ -25,16 +25,32 @@ var qNum = 0;
 var subtractTime = "no";
 var stopTime = "no";
 var secondsLeft = questionArray.length * 15;
-
+var score1 = 0
+var score2 = 0
+var score3 = 0
+var lastScore = 0
 
 // if (storedTodos !== null) {
 //     todos = storedTodos;
 //   }
 
-  var score1 = window.localStorage.getItem('score1');
-  var score2 = window.localStorage.getItem('score2');
-  var score3 = window.localStorage.getItem('score3');
-  var lastScore = window.localStorage.getItem('lastScore');
+//   var score1 = window.localStorage.getItem('score1');
+//   var score2 = window.localStorage.getItem('score2');
+//   var score3 = window.localStorage.getItem('score3');
+//   var lastScore = window.localStorage.getItem('lastScore');
+
+    if (localStorage.getItem('score1') !== null) {
+        score1 = JSON.parse(localStorage.getItem('score1'));
+        score2 = JSON.parse(localStorage.getItem('score2'));
+        score3 = JSON.parse(localStorage.getItem('score3'));
+        lastScore = JSON.parse(localStorage.getItem('lastScore'));
+    } 
+    else {
+        localStorage.setItem("lastScore", JSON.stringify(lastScore));
+    localStorage.setItem("score1", JSON.stringify(score1));
+    localStorage.setItem("score2", JSON.stringify(score2));
+    localStorage.setItem("score3", JSON.stringify(score3));
+}
 
 
 
@@ -60,7 +76,7 @@ function startTimer() {
 
         if (secondsLeft <= 0) {
             clearInterval(timerInterval);
-            scoreCounter();
+            setScoreboard();
         }
     }, 1000)
 }
@@ -149,7 +165,7 @@ buttons.forEach(function (button) {
             //end quiz and show scoreboard
             stopTime = "yes"
             qText.textContent = "You have completed all of the questions in the quiz"
-            scoreBoard();
+            setScoreboard();
         }
     })
 
@@ -159,11 +175,30 @@ highScore.addEventListener("click", function () {
     scoreBoard();
 })
 
+function setScoreboard () {
+    // Set lastScore with time remaining from this test
+    if (secondsLeft !== questionArray.length * 15) {
+        lastScore = secondsLeft
+        console.log("lastScore: " + lastScore);
+        if (lastScore >= score1) {
+            score3 = score2;
+            score2 = score1;
+            score1 = lastScore;
+        } else if (lastScore >= score2) {
+            score3 = score2;
+            score2 = lastScore;
+        } else if (lastScore >= score3) {
+            score3 = lastScore;
+        }
+    }
+    scoreBoard();
+}
+
 function scoreBoard() {
-    window.localStorage.setItem("lastScore", lastScore);
-    localStorage.setItem("score1", score1);
-    localStorage.setItem("score2", score2);
-    localStorage.setItem("score3", score3);
+    // window.localStorage.setItem("lastScore", lastScore);
+    // localStorage.setItem("score1", score1);
+    // localStorage.setItem("score2", score2);
+    // localStorage.setItem("score3", score3);
     
     startBtn.style.display = "none";
     aBtn.parentElement.parentElement.style.display = "";
@@ -174,24 +209,21 @@ function scoreBoard() {
     bBtn.style.display = "none";
     cBtn.style.display = "none";
     dBtn.style.display = "none";
-    setTimeout(function(){ }, 3000);
-    lastScore = secondsLeft
-    console.log("lastScore: " + lastScore);
+
     
-    if (lastScore >= score1) {
-        score3 = score2;
-        score2 = score1;
-        score1 = lastScore;
-    } else if (lastScore >= score2) {
-        score3 = score2;
-        score2 = lastScore;
-    } else if (lastScore >= score3) {
-        score3 = lastScore;
-    }
+    console.log("lastScore: " + lastScore);
+
+    // Modify scoreboard with new score
+    // Display scoreboard
     aAnswer.textContent = "Score 1: " + score1;
     bAnswer.textContent = "Score 2: " + score2;
     cAnswer.textContent = "Score 3: " + score3;
     dAnswer.textContent = "Last Score: " + lastScore;
+    // Rewrite scoreboard in local storage
+    localStorage.setItem("lastScore", JSON.stringify(lastScore));
+    localStorage.setItem("score1", JSON.stringify(score1));
+    localStorage.setItem("score2", JSON.stringify(score2));
+    localStorage.setItem("score3", JSON.stringify(score3));
 }
 
 // TANGENT: Questions will be pulled random 
