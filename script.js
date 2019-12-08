@@ -1,10 +1,5 @@
-// High score link
-
-// Countdown Timer: Starts at 0 on page load, Set timer for 15 seconds per question
-
+// Set all global variables
 var timer = document.getElementById("timer");
-// var jumbotron = document.querySelector(".jumbotron");
-// var quiz = document.querySelector(".quizHeader");
 var qText = document.getElementById("qText");
 var startBtn = document.getElementById("startBtn");
 var buttons = document.querySelectorAll(".optbtn")
@@ -30,39 +25,29 @@ var score2 = 0
 var score3 = 0
 var lastScore = 0
 
-// if (storedTodos !== null) {
-//     todos = storedTodos;
-//   }
+// Initial content setup
+timer.textContent = "Quiz Time Limit: " + secondsLeft;
+qText.textContent = "You will have " + secondsLeft + " seconds to complete " + questionArray.length + " number of questions. Every question you get wrong will penalize your time by 15 seconds. Once you finish the quize or the timer gets to 0, the quize will stop. Your quiz will be the time remaining on the timer."
+var quizHeader = document.querySelector(".quizHeader");
+aBtn.parentElement.parentElement.style.display = "none";
+bBtn.parentElement.parentElement.style.display = "none";
+cBtn.parentElement.parentElement.style.display = "none";
+dBtn.parentElement.parentElement.style.display = "none";
 
-//   var score1 = window.localStorage.getItem('score1');
-//   var score2 = window.localStorage.getItem('score2');
-//   var score3 = window.localStorage.getItem('score3');
-//   var lastScore = window.localStorage.getItem('lastScore');
-
-    if (localStorage.getItem('score1') !== null) {
-        score1 = JSON.parse(localStorage.getItem('score1'));
-        score2 = JSON.parse(localStorage.getItem('score2'));
-        score3 = JSON.parse(localStorage.getItem('score3'));
-        lastScore = JSON.parse(localStorage.getItem('lastScore'));
-    } 
-    else {
-        localStorage.setItem("lastScore", JSON.stringify(lastScore));
+// Retrieve/set local storage
+if (localStorage.getItem('score1') !== null) {
+    score1 = JSON.parse(localStorage.getItem('score1'));
+    score2 = JSON.parse(localStorage.getItem('score2'));
+    score3 = JSON.parse(localStorage.getItem('score3'));
+    lastScore = JSON.parse(localStorage.getItem('lastScore'));
+} else {
+    localStorage.setItem("lastScore", JSON.stringify(lastScore));
     localStorage.setItem("score1", JSON.stringify(score1));
     localStorage.setItem("score2", JSON.stringify(score2));
     localStorage.setItem("score3", JSON.stringify(score3));
 }
 
-
-
-
-
-console.log(score1, score2, score3, lastScore);
-
-
-timer.textContent = "Quiz Time Limit: " + secondsLeft;
-qText.textContent = "You will have " + secondsLeft + " seconds to complete " + questionArray.length + " number of questions. Every question you get wrong will penalize your time by 15 seconds. Once you finish the quize or the timer gets to 0, the quize will stop. Your quiz will be the time remaining on the timer."
-
-
+// Timer
 function startTimer() {
     var timerInterval = setInterval(function () {
         if (stopTime === "yes") {
@@ -70,7 +55,7 @@ function startTimer() {
         }
         secondsLeft--;
         console.log(secondsLeft);
-        
+
         timer.textContent = "Time: " + secondsLeft;
         timer.setAttribute("style", "color:white");
 
@@ -81,30 +66,17 @@ function startTimer() {
     }, 1000)
 }
 
-// The user arrives at the landing page and is presented with a call-to-action to "Start Quiz." Also note the navigation option to "View Highscores" and the "Time" value set at 0.
-
-// Clicking the "Start Quiz" button presents the user with a series of questions. The timer is initialized with a value and immediately begins countdown.
-var quizHeader = document.querySelector(".quizHeader");
-aBtn.parentElement.parentElement.style.display = "none";
-bBtn.parentElement.parentElement.style.display = "none";
-cBtn.parentElement.parentElement.style.display = "none";
-dBtn.parentElement.parentElement.style.display = "none";
-
-
 // start quiz
 startBtn.addEventListener("click", function () {
-    // console.log("Start Button works");
-    startTimer();
+    secondsLeft = questionArray.length * 15;
     startBtn.style.display = "none";
     aBtn.parentElement.parentElement.style.display = "";
     bBtn.parentElement.parentElement.style.display = "";
     cBtn.parentElement.parentElement.style.display = "";
     dBtn.parentElement.parentElement.style.display = "";
-
+    startTimer();
     nextQuestion();
-
 })
-
 
 // load next question onto page
 function nextQuestion() {
@@ -113,16 +85,11 @@ function nextQuestion() {
 
     for (let i = questionArray[qNum].choices.length - 1; i > -1; i--) {
         j = Math.floor(Math.random() * (i + 1));
-        // console.log("j: " + j);
-
         rndAns.push(questionArray[qNum].choices[j]);
         questionArray[qNum].choices.splice(j, 1);
-
-        // console.log("rndAns:" + rndAns);
-        // console.log("ansAry:" + questionArray[qNum].choices);
     }
 
-
+    // Display questions on screen
     qText.textContent = questionArray[qNum].question;
     aAnswer.textContent = rndAns[0];
     bAnswer.textContent = rndAns[1];
@@ -133,34 +100,24 @@ function nextQuestion() {
 // Check answer
 buttons.forEach(function (button) {
     button.addEventListener("click", function (event) {
-        // console.log("clicked", event.target);
-        opt = ["A", "B", "C", "D", ]
-        answer = rndAns[opt.indexOf(event.target.textContent)];
-        // console.log(answer);
+        var opt = ["A", "B", "C", "D"]
+        var answer = rndAns[opt.indexOf(event.target.textContent)];
         if (answer === questionArray[qNum].answer) {
-            console.log("correct answer");
-            
             correctAns++;
             scoreCounter.textContent = "Correct: " + correctAns + " Incorrect: " + incorrectAns;
-            // console.log(correctAnswers);
-
         } else {
-            console.log("incorrect answer");
             incorrectAns++;
             // deduct time
             secondsLeft = secondsLeft - 15;
         }
-        scoreCounter.textContent = "Correct: " + correctAns + " Incorrect: " + incorrectAns;
-        // console.log(qNum);
-        // console.log(questionArray.length);
 
+        // Update score counter
+        scoreCounter.textContent = "Correct: " + correctAns + " Incorrect: " + incorrectAns;
 
         if (qNum < questionArray.length - 1) {
-
             //move to next question
             qNum++
             nextQuestion();
-
         } else {
             //end quiz and show scoreboard
             stopTime = "yes"
@@ -168,18 +125,17 @@ buttons.forEach(function (button) {
             setScoreboard();
         }
     })
-
 })
 
+// Press highScore button to go to scoreboard
 highScore.addEventListener("click", function () {
     scoreBoard();
 })
 
-function setScoreboard () {
-    // Set lastScore with time remaining from this test
+// Set lastScore with time remaining from this test
+function setScoreboard() {
     if (secondsLeft !== questionArray.length * 15) {
         lastScore = secondsLeft
-        console.log("lastScore: " + lastScore);
         if (lastScore >= score1) {
             score3 = score2;
             score2 = score1;
@@ -194,12 +150,8 @@ function setScoreboard () {
     scoreBoard();
 }
 
+// Display scoreboard
 function scoreBoard() {
-    // window.localStorage.setItem("lastScore", lastScore);
-    // localStorage.setItem("score1", score1);
-    // localStorage.setItem("score2", score2);
-    // localStorage.setItem("score3", score3);
-    
     startBtn.style.display = "none";
     aBtn.parentElement.parentElement.style.display = "";
     bBtn.parentElement.parentElement.style.display = "";
@@ -209,12 +161,6 @@ function scoreBoard() {
     bBtn.style.display = "none";
     cBtn.style.display = "none";
     dBtn.style.display = "none";
-
-    
-    console.log("lastScore: " + lastScore);
-
-    // Modify scoreboard with new score
-    // Display scoreboard
     aAnswer.textContent = "Score 1: " + score1;
     bAnswer.textContent = "Score 2: " + score2;
     cAnswer.textContent = "Score 3: " + score3;
@@ -225,18 +171,3 @@ function scoreBoard() {
     localStorage.setItem("score2", JSON.stringify(score2));
     localStorage.setItem("score3", JSON.stringify(score3));
 }
-
-// TANGENT: Questions will be pulled random 
-
-// Score is calculated by time remaining. Answering quickly and correctly results in a higher score. Answering incorrectly results in a time penalty (for example, 15 seconds are subtracted from time remaining).
-
-//When time runs out and/or all questions are answered, the user is presented with their final score and asked to enter their initials. Their final score and initials are then stored in localStorage.
-
-
-// BONUS: Add audio files to alert the user of correct or incorrect answers. Be sure to include the appropriate license.
-
-// BONUS: Customize the application theme. DONE
-
-// BONUS: Create multiple quizzes and an option for users to choose between them.
-
-// BONUS: Add the application to your portfolio.
