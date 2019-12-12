@@ -1,5 +1,8 @@
 # Homework_04_Quiz
 
+## Deployed Link
+ https://ajrsabet.github.io/Javascript_Quiz/
+
 ## How to use this quiz
 
 
